@@ -18,7 +18,7 @@ def install_packages():
                 print(f"Failed to install {package}.")
 
 def configure_ngrok():
-    ngrok_token = "2ryqbGZZvCxztxaMJXuiRnzfdkS_2MeKBCE7uDxv3dr3WVnuM"
+    ngrok_token = "2ryqitbth9hovhuNWpkV1y86xTt_4LYVXmCCpsLuqbcWCArtu"
     try:
         ngrok.set_auth_token(ngrok_token)
         print("ngrok token configured successfully.")
@@ -26,7 +26,7 @@ def configure_ngrok():
         print(f"Failed to configure ngrok: {str(e)}")
 
 def update_soul_txt(public_url):
-    with open("soul18.txt", "w") as file:
+    with open("soul.txt", "w") as file:
         file.write(public_url)
     print(f"New ngrok link saved in eagle3.txt")
 
@@ -40,7 +40,7 @@ def update_vps_soul_txt(public_url):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(vps_ip, username=vps_user, password=vps_password)
         sftp = ssh.open_sftp()
-        with sftp.open("soul18.txt", "w") as file:
+        with sftp.open("soul.txt", "w") as file:
             file.write(public_url)
         sftp.close()
         ssh.close()
